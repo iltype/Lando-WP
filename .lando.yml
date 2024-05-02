@@ -1,0 +1,59 @@
+name: demowp
+
+recipe: wordpress
+
+config:
+  webroot: www
+  php: '8.1'
+  database: mariadb
+  xdebug: true
+  config:
+    server: config/httpd.conf
+    vhosts: config/custom.conf
+    php:    config/php.ini
+proxy:
+  appserver:
+    - demowp.lndo.site
+  mailhog:
+    - mail.demowp.lndo.site
+  pma:
+    - pma.demowp.lndo.site
+services:
+  appserver:
+    build_as_root:
+      - apt-get update -y
+      - apt-get install -y wget curl
+    overrides:
+      environment:
+        PHP_MEMORY_LIMIT: 1G
+  cache:
+    type: redis
+    persist: true
+    node:
+      type: 'node'
+      build:
+        - npm install
+      scanner: false
+      ssl: false
+      sslExpose: false
+  pma:
+    type: phpmyadmin
+    hosts: database
+  mailhog:
+    type: 'mailhog:v1.0.1'
+    portforward: false
+    hogfrom:
+      - appserver
+tooling:
+  redis-cli:
+    service: cache
+  node:
+    service: node
+  npm:
+    service: node
+  wp-install:
+    service: wordpress
+    cmd:
+      - wp config create --dbname=demowpdb --dbuser=demowp --dbpass=demowp --dbhost=database
+      - wp core install --url=http://$LANDO_APP.$LANDO_DOMAIN --title=XXX --admin_user=admin --admin_password=admin --admin_email=admin@demowp.lndo.site
+      - wp plugin install updraftplus --activate
