@@ -22,6 +22,7 @@ This repository contains the Lando configuration file (.lando.yml) that I use fo
 
 1. Download and install [Docker desktop](https://www.docker.com/products/docker-desktop/)
 2. Download and install [lando](https://github.com/lando/lando/releases)
+3. Create www folder
 
 ## Usage
 
