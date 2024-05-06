@@ -34,3 +34,5 @@ This repository contains the Lando configuration file (.lando.yml) that I use fo
 ## Cert
 
 - Windows
+
+- Linux Debian
