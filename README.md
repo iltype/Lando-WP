@@ -32,3 +32,5 @@ This repository contains the Lando configuration file (.lando.yml) that I use fo
 2. lando start
 
 ## Cert
+
+- Windows
